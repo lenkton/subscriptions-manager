@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/lenkton/subscriptions-manager/pkg/middleware"
 	"github.com/lenkton/subscriptions-manager/pkg/service/subscriptions"
 )
 
@@ -17,7 +18,7 @@ func main() {
 	mux.HandleFunc("PUT /subscriptions/{subscriptionID}", service.HandleUpdateSubscription)
 	mux.HandleFunc("DELETE /subscriptions/{subscriptionID}", service.HandleDeleteSubscription)
 
-	handler := mux
+	handler := middleware.Logger(mux)
 
 	// TODO: use env to fetch host/port
 	server := http.Server{
