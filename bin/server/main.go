@@ -10,13 +10,14 @@ import (
 
 func main() {
 	service := subscriptions.NewService()
+	adapter := service.RESTAdapter()
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /subscriptions", service.HandleListSubscriptions)
-	mux.HandleFunc("POST /subscriptions", service.HandleCreateSubscription)
-	mux.HandleFunc("GET /subscriptions/{subscriptionID}", service.HandleGetSubscription)
-	mux.HandleFunc("PUT /subscriptions/{subscriptionID}", service.HandleUpdateSubscription)
-	mux.HandleFunc("DELETE /subscriptions/{subscriptionID}", service.HandleDeleteSubscription)
+	mux.HandleFunc("GET /subscriptions", adapter.HandleListSubscriptions)
+	mux.HandleFunc("POST /subscriptions", adapter.HandleCreateSubscription)
+	mux.HandleFunc("GET /subscriptions/{subscriptionID}", adapter.HandleGetSubscription)
+	mux.HandleFunc("PUT /subscriptions/{subscriptionID}", adapter.HandleUpdateSubscription)
+	mux.HandleFunc("DELETE /subscriptions/{subscriptionID}", adapter.HandleDeleteSubscription)
 
 	handler := middleware.Logger(mux)
 
