@@ -1,11 +1,19 @@
 package subscriptions
 
-type Service struct{}
+type Service struct {
+	storage *Storage
+}
 
 func NewService() *Service {
-	return &Service{}
+	return &Service{
+		storage: NewStorage(),
+	}
 }
 
 func (s *Service) RESTAdapter() *RESTAdapter {
-	return newRESTAdapter()
+	return newRESTAdapter(s)
+}
+
+func (s *Service) ListSubscriptions() []*Subscription {
+	return s.storage.List()
 }
