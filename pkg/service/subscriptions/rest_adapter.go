@@ -1,9 +1,9 @@
 package subscriptions
 
 import (
-	"encoding/json"
-	"log"
 	"net/http"
+
+	"github.com/lenkton/subscriptions-manager/pkg/httputil"
 )
 
 type RESTAdapter struct {
@@ -16,11 +16,7 @@ func newRESTAdapter(s *Service) *RESTAdapter {
 
 func (a *RESTAdapter) HandleListSubscriptions(w http.ResponseWriter, r *http.Request) {
 	subs := a.service.ListSubscriptions()
-
-	err := json.NewEncoder(w).Encode(subs)
-	if err != nil {
-		log.Printf("ERROR: encoding subs: %v\n", err)
-	}
+	httputil.EncodeJSON(w, subs, http.StatusOK)
 }
 
 func (a *RESTAdapter) HandleCreateSubscription(w http.ResponseWriter, r *http.Request) {}
