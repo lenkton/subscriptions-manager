@@ -29,6 +29,7 @@ func (s *Storage) Get(id int) (*Subscription, error) {
 	return nil, ErrSubscriptionNotFound
 }
 
+// WARN: it modifies the sub: it sets the ID
 func (s *Storage) Add(sub *Subscription) int {
 	s.lastID++
 	sub.ID = s.lastID
