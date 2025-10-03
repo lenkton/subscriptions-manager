@@ -31,8 +31,8 @@ func main() {
 	mux.HandleFunc("PUT /subscriptions/{subscriptionID}", adapter.HandleUpdateSubscription)
 	mux.HandleFunc("DELETE /subscriptions/{subscriptionID}", adapter.HandleDeleteSubscription)
 
-	// TODO: mark content type as json
 	handler := middleware.Logger(mux)
+	handler = middleware.JSONEndpoint(handler)
 
 	// TODO: use env to fetch host/port
 	server := http.Server{
