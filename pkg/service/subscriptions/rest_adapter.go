@@ -18,7 +18,13 @@ func newRESTAdapter(s *Service) *RESTAdapter {
 }
 
 func (a *RESTAdapter) HandleListSubscriptions(w http.ResponseWriter, r *http.Request) {
-	subs := a.service.ListSubscriptions()
+	subs, err := a.service.ListSubscriptions()
+	if err != nil {
+		log.Printf("ERROR: service.ListSubscriptions: %v\n", err)
+		http.Error(w, `{"error":"internal server error"}`, http.StatusInternalServerError)
+		return
+	}
+
 	httputil.EncodeJSON(w, subs, http.StatusOK)
 }
 

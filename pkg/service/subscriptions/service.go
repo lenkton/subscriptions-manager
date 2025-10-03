@@ -1,12 +1,14 @@
 package subscriptions
 
+import "github.com/jackc/pgx/v5/pgxpool"
+
 type Service struct {
 	storage *Storage
 }
 
-func NewService() *Service {
+func NewService(connectionPool *pgxpool.Pool) *Service {
 	return &Service{
-		storage: NewStorage(),
+		storage: NewStorage(connectionPool),
 	}
 }
 
@@ -14,13 +16,12 @@ func (s *Service) RESTAdapter() *RESTAdapter {
 	return newRESTAdapter(s)
 }
 
-func (s *Service) ListSubscriptions() []*Subscription {
+func (s *Service) ListSubscriptions() ([]*Subscription, error) {
 	return s.storage.List()
 }
 
-// NOTE: maybe in the future it will be returning an error
 // WARN: it modifies the passed sub: it sets up the ID
 func (s *Service) CreateSubscription(sub *Subscription) error {
-	s.storage.Add(sub)
-	return nil
+	_, err := s.storage.Add(sub)
+	return err
 }
