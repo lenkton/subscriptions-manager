@@ -25,11 +25,12 @@ func main() {
 	adapter := service.RESTAdapter()
 
 	mux := http.NewServeMux()
+	subID := subscriptions.SubscriptionIDPathSegmentName
 	mux.HandleFunc("GET /subscriptions", adapter.HandleListSubscriptions)
 	mux.HandleFunc("POST /subscriptions", adapter.HandleCreateSubscription)
-	mux.HandleFunc("GET /subscriptions/{subscriptionID}", adapter.HandleGetSubscription)
-	mux.HandleFunc("PUT /subscriptions/{subscriptionID}", adapter.HandleUpdateSubscription)
-	mux.HandleFunc("DELETE /subscriptions/{subscriptionID}", adapter.HandleDeleteSubscription)
+	mux.HandleFunc("GET /subscriptions/{"+subID+"}", adapter.HandleGetSubscription)
+	mux.HandleFunc("PUT /subscriptions/{"+subID+"}", adapter.HandleUpdateSubscription)
+	mux.HandleFunc("DELETE /subscriptions/{"+subID+"}", adapter.HandleDeleteSubscription)
 
 	handler := middleware.Logger(mux)
 	handler = middleware.JSONEndpoint(handler)

@@ -25,3 +25,7 @@ func (s *Service) CreateSubscription(sub *Subscription) error {
 	_, err := s.storage.Add(sub)
 	return err
 }
+
+func (s *Service) GetSubscription(id int) (*Subscription, error) {
+	return s.storage.Get(id)
+}

@@ -38,7 +38,9 @@ func (s *Storage) Get(id int) (*Subscription, error) {
 		return nil, fmt.Errorf("query: %v", err)
 	}
 	sub, err := pgx.CollectExactlyOneRow(row, pgx.RowToAddrOfStructByName[Subscription])
-	// TODO: use ErrSubscriptionNotFound
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, ErrSubscriptionNotFound
+	}
 	if err != nil {
 		return nil, fmt.Errorf("CollectExactlyOneRow: %v", err)
 	}
