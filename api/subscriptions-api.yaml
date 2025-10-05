@@ -62,8 +62,29 @@ components:
           type: string
           description: "The subscription's service name"
           example: 'Yandex Plus'
+        price:
+          type: integer
+          description: The monthly fee for the subscription
+          example: 400
+        user_id:
+          type: string
+          format: uuid
+          description: ID of the subscriber
+        start_date:
+          type: string
+          format: '^\d{2}-\d{4}$'
+          description: The first month of the subscription (in format MM-YYYY)
+          example: 01-2012
+        end_date:
+          type: string
+          format: '^\d{2}-\d{4}$'
+          description: The last month of the subscription (in format MM-YYYY)
+          example: 12-2012
       required:
         - service_name
+        - price
+        - user_id
+        - start_date
     UnprocessableBodyErrorMessage:
       type: object
       properties:
