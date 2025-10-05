@@ -106,6 +106,30 @@ paths:
                 anyOf:
                 - $ref: '#/components/schemas/UnprocessableBodyErrorMessage'
                 - $ref: '#/components/schemas/UnprocessablePathErrorMessage'
+    delete:
+      summary: Delete Subscription
+      description: Delete a specific subscription (defined by its ID in the system)
+      parameters:
+        - in: path
+          name: subscriptionId
+          required: true
+          schema:
+            $ref: '#/components/schemas/SubscriptionId'
+      responses:
+        204:
+          description: Subscription deleted successfully
+        404:
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorMessage'
+        422:
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessablePathErrorMessage'
 components:
   schemas:
     SubscriptionId:
