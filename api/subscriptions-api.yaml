@@ -17,18 +17,59 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SubscriptionWithId'
+    post:
+      summary: Create a subscription
+      description: Create a subscription
+      requestBody:
+        description: Params of the new subscription
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionWithoutId'
+      responses:
+        201:
+          description: A subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionWithId'
+        422:
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableBodyErrorMessage'
 components:
   schemas:
+    SubscriptionId:
+      type: integer
+      description: Unique identifier of the subscription
+      example: 1
     SubscriptionWithId:
+      allOf:
+        - $ref: '#/components/schemas/SubscriptionWithoutId'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/SubscriptionId'
+          required:
+            - id
+    SubscriptionWithoutId:
       type: object
       properties:
-        id:
-          type: integer
-          description: Unique identifier of the subscription
         service_name:
           type: string
           description: "The subscription's service name"
           example: 'Yandex Plus'
       required:
-        - id
         - service_name
+    UnprocessableBodyErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: malformed body
+      required:
+        - error
