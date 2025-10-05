@@ -40,6 +40,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnprocessableBodyErrorMessage'
+  /subscriptions/{subscriptionId}:
+    get:
+      summary: Get Subscription by ID
+      description: Get a specific subscription by its ID in the system
+      parameters:
+        - in: path
+          name: subscriptionId
+          required: true
+          schema:
+            $ref: '#/components/schemas/SubscriptionId'
+      responses:
+        200:
+          description: A subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionWithId'
+        404:
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorMessage'
+        422:
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessablePathErrorMessage'
 components:
   schemas:
     SubscriptionId:
@@ -85,6 +114,15 @@ components:
         - price
         - user_id
         - start_date
+    NotFoundErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: not found
+      required:
+        - error
     UnprocessableBodyErrorMessage:
       type: object
       properties:
@@ -92,5 +130,14 @@ components:
           type: string
           description: Error message
           example: malformed body
+      required:
+        - error
+    UnprocessablePathErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: malformed path
       required:
         - error
